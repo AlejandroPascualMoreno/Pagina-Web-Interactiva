@@ -1,7 +1,13 @@
+var modal = document.getElementById('id01');
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
 const NO_OF_HIGH_SCORES = 5;
 const HIGH_SCORES = 'highScores';
-const highScoreString = localStorage.getItem(HIGH_SCORES);
-const highScores = JSON.parse(highScoreString) ?? [];
 
 showHighScores();
 
@@ -27,14 +33,14 @@ function resetGame(text) {
   score = -1;
   startButton.classList.remove('hidden');
   heading.textContent = 'Simón Dice';
-  puntuacion.textContent = 'Score: 0';
+  puntuacion.textContent = 'Puntuación: 0';
   info.classList.add('hidden');
   tileContainer.classList.add('unclickable');
 }
 
 function humanTurn(level) {
   tileContainer.classList.remove('unclickable');
-  info.textContent = `Your turn: ${level} Tap${level > 1 ? 's' : ''}`;
+  info.textContent = `Tu turno: ${level} Tap${level > 1 ? 's' : ''}`;
 }
 
 function activateTile(color) {
@@ -69,9 +75,9 @@ function nextRound() {
   score += 1;
 
   tileContainer.classList.add('unclickable');
-  info.textContent = 'Espera a la máquina';
-  heading.textContent = `Nivel ${level} de 20`;
-  puntuacion.textContent = `Score: ${score}`;
+  info.textContent = 'Espera a que termine la secuencia...';
+  heading.textContent = `Nivel ${level}`;
+  puntuacion.textContent = `Puntuación: ${score}`;
 
 
   const nextSequence = [...sequence];
@@ -105,7 +111,7 @@ function handleClick(tile) {
     return;
   }
 
-  info.textContent = `Your turn: ${remainingTaps} Tap${
+  info.textContent = `Tu turno: ${remainingTaps} Tap${
     remainingTaps > 1 ? 's' : ''
   }`;
 }
@@ -113,7 +119,7 @@ function handleClick(tile) {
 function startGame() {
   startButton.classList.add('hidden');
   info.classList.remove('hidden');
-  info.textContent = 'Wait for the computer';
+  info.textContent = 'Espera a que termine la secuencia...';
   nextRound();
 }
 
@@ -129,7 +135,7 @@ function showHighScores() {
   const highScoreList = document.getElementById('highScores');
 
   highScoreList.innerHTML = highScores
-    .map((score) => `<li>${score.score} - ${score.name}`)
+    .map((score) => `<li>${score.name} - (${score.score}p.)`)
     .join('');
 }
 
@@ -138,7 +144,7 @@ function checkHighScore(score) {
   const lowestScore = highScores[NO_OF_HIGH_SCORES - 1]?.score ?? 0;
 
   if (score > lowestScore) {
-    const name = prompt('You got a highscore! Enter name:');
+    const name = prompt('¡Has conseguido un nuevo récord! Introduce tu nombre:');
     const newScore = { score, name };
     saveHighScore(newScore, highScores);
     showHighScores();
