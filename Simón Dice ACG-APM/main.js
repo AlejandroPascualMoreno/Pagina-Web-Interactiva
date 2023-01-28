@@ -1,7 +1,7 @@
 let sequence = [];
 let humanSequence = [];
 let level = 0;
-let puntMax =  localStorage["puntuacion"];
+
 const startButton = document.querySelector('.js-start');
 const info = document.querySelector('.js-info');
 const heading = document.querySelector('.js-heading');
@@ -16,20 +16,11 @@ function resetGame(text) {
   heading.textContent = 'Simón Dice';
   info.classList.add('hidden');
   tileContainer.classList.add('unclickable');
- 
 }
 
 function humanTurn(level) {
   tileContainer.classList.remove('unclickable');
   info.textContent = `Your turn: ${level} Tap${level > 1 ? 's' : ''}`;
-  localStorage["puntuacion"] = (parseInt(localStorage["puntuacion"]) || 0) + 1; 
-  if(localStorage["puntuacion"] > level){
-    localStorage["puntuacion"] = puntMax;
-  }else if(puntMax<localStorage["puntuacion"]){
-    localStorage["puntuacion"] = (parseInt(localStorage["puntuacion"]) || 0); 
-  }
-  
-
 }
 
 function activateTile(color) {
@@ -75,8 +66,6 @@ function nextRound() {
   setTimeout(() => {
     humanTurn(level);
   }, level * 600 + 1000);
-  
-  document.getElementById('puntuada').innerHTML = localStorage["puntuacion"] + " puntos";
 }
 
 function handleClick(tile) {
@@ -100,8 +89,9 @@ function handleClick(tile) {
     return;
   }
 
-  info.textContent = `Your turn: ${remainingTaps} Tap${remainingTaps > 1 ? 's' : ''
-    }`;
+  info.textContent = `Your turn: ${remainingTaps} Tap${
+    remainingTaps > 1 ? 's' : ''
+  }`;
 }
 
 function startGame() {
