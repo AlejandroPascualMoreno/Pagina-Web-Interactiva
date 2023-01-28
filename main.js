@@ -1,19 +1,33 @@
+const NO_OF_HIGH_SCORES = 5;
+const HIGH_SCORES = 'highScores';
+const highScoreString = localStorage.getItem(HIGH_SCORES);
+const highScores = JSON.parse(highScoreString) ?? [];
+
+showHighScores();
+
 let sequence = [];
 let humanSequence = [];
 let level = 0;
+let score = -1;
 
 const startButton = document.querySelector('.js-start');
 const info = document.querySelector('.js-info');
 const heading = document.querySelector('.js-heading');
+const puntuacion = document.querySelector('.js-puntuacion');
 const tileContainer = document.querySelector('.js-container');
 
 function resetGame(text) {
+  
   alert(text);
+  checkHighScore(score);
   sequence = [];
   humanSequence = [];
   level = 0;
+  
+  score = -1;
   startButton.classList.remove('hidden');
   heading.textContent = 'Simón Dice';
+  puntuacion.textContent = 'Score: 0';
   info.classList.add('hidden');
   tileContainer.classList.add('unclickable');
 }
@@ -52,10 +66,12 @@ function nextStep() {
 
 function nextRound() {
   level += 1;
+  score += 1;
 
   tileContainer.classList.add('unclickable');
   info.textContent = 'Espera a la máquina';
   heading.textContent = `Nivel ${level} de 20`;
+  puntuacion.textContent = `Score: ${score}`;
 
 
   const nextSequence = [...sequence];
@@ -107,3 +123,32 @@ tileContainer.addEventListener('click', event => {
 
   if (tile) handleClick(tile);
 });
+
+function showHighScores() {
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  const highScoreList = document.getElementById('highScores');
+
+  highScoreList.innerHTML = highScores
+    .map((score) => `<li>${score.score} - ${score.name}`)
+    .join('');
+}
+
+function checkHighScore(score) {
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  const lowestScore = highScores[NO_OF_HIGH_SCORES - 1]?.score ?? 0;
+
+  if (score > lowestScore) {
+    const name = prompt('You got a highscore! Enter name:');
+    const newScore = { score, name };
+    saveHighScore(newScore, highScores);
+    showHighScores();
+  }
+}
+
+function saveHighScore(score, highScores) {
+  highScores.push(score);
+  highScores.sort((a, b) => b.score - a.score);
+  highScores.splice(NO_OF_HIGH_SCORES);
+
+  localStorage.setItem('highScores', JSON.stringify(highScores));
+}
