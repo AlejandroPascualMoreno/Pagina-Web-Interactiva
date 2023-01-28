@@ -134,6 +134,15 @@ header {
   transform: translateY(10px);
 }
 
+.white {
+  background-color: #ffffff;
+  border-radius: 50%;
+  height: 180px;
+  width: 180px;
+  margin: 102px;
+  position: absolute!important;
+}
+
 .info-section {
   text-align: center;
 }
