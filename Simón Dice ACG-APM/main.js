@@ -23,9 +23,13 @@ function humanTurn(level) {
   tileContainer.classList.remove('unclickable');
   info.textContent = `Your turn: ${level} Tap${level > 1 ? 's' : ''}`;
   localStorage["puntuacion"] = (parseInt(localStorage["puntuacion"]) || 0) + 1; 
-  if( localStorage["puntuacion"] > level){
+  if(localStorage["puntuacion"] > level){
     localStorage["puntuacion"] = puntMax;
+  }else if(puntMax<localStorage["puntuacion"]){
+    localStorage["puntuacion"] = (parseInt(localStorage["puntuacion"]) || 0); 
   }
+  
+
 }
 
 function activateTile(color) {
