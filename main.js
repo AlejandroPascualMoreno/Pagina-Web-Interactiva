@@ -66,6 +66,9 @@ function nextRound() {
   setTimeout(() => {
     humanTurn(level);
   }, level * 600 + 1000);
+
+  localStorage["puntuacion"] = (parseInt(localStorage["puntuacion"]) || 0) + 1;
+  document.getElementById('puntuada').innerHTML = localStorage["puntuacion"] + " puntos";
 }
 
 function handleClick(tile) {
