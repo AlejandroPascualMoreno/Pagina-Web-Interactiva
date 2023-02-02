@@ -190,6 +190,24 @@ h2 {
   justify-content: center;
 }
 
+.botonMarcas button {
+  background-color: #db3333;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 5px solid rgb(173, 52, 52);
+  border-radius: 50px;
+  width: 50%;
+  font-size: large;
+  font-weight: bold;
+}
+
+.botonMarcas button:hover {
+  background-color: #e24040;
+  cursor: pointer;
+}
+
+
 #highScores {
   margin-bottom: 5%;
   font-size: 1.8rem;

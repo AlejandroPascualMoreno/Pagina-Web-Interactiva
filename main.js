@@ -45,7 +45,7 @@ function resetGame(text) {
   
   score = -1;
   startButton.classList.remove('hidden');
-  heading.textContent = 'Simón Dice';
+  heading.textContent = 'Slime Says';
   puntuacion.textContent = 'Puntuación: 0';
   info.classList.add('hidden');
   tileContainer.classList.add('unclickable');
