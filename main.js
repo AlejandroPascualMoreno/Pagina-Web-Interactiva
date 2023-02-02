@@ -93,38 +93,46 @@ function nextStep() {
   return random;
 }
 
+//Esta funcion lo que hace es iniciar otra ronda de juego
 function nextRound() {
   level += 1;
   score += 1;
-
+  //Esto hace que el botón no sea clicable durante la secuencia
   tileContainer.classList.add('unclickable');
+  //Este mensaje sale mientras la ronda sigue su curso
   info.textContent = 'Espera a que termine la secuencia...';
+  //Este mensaje te indica el nivel en el que te encuentras
   heading.textContent = `Nivel ${level}`;
+  //Este mensaje te indica la puntuacion actual
   puntuacion.textContent = `Puntuación: ${score}`;
 
-
+  //Esto lo que hace es llamar al array secuencia para iniciar la siguiente
   const nextSequence = [...sequence];
+  //Aquí es donde se inicia el array de la siguiente secuencia
   nextSequence.push(nextStep());
+  //La funcion lo que hace es iniciar la ronda y poner la secuencia correspondiente
   playRound(nextSequence);
 
   sequence = [...nextSequence];
+  //Aquí se pone un delay desde que termina la secuencia hasta que inicia el turno del jugador 
   setTimeout(() => {
     humanTurn(level);
   }, level * 600 + 1000);
 }
 
+  //Esta funcion lo que hace es ponerle el sonido a las pulsaciones de los colores
 function handleClick(tile) {
   const index = humanSequence.push(tile) - 1;
   const sound = document.querySelector(`[data-sound='${tile}']`);
   sound.play();
-
+  //Esta constante sirve para ver la cantidad de toques que faltan hasta completar el nivel y mostrarlo en pantalla
   const remainingTaps = sequence.length - humanSequence.length;
-
+  //Este condicional sirve para avisar de que la tecla pulsada es incorrecta, por lo tanto resetea el juego 
   if (humanSequence[index] !== sequence[index]) {
     resetGame('¡PRRRR! ¡Terrible, tecla incorrecta!');
     return;
   }
-
+  //Este condicional sirve para indicar que la combinación de teclas ha sido correcta, por lo tanto continua el juego
   if (humanSequence.length === sequence.length) {
     humanSequence = [];
     info.textContent = '¡Bingo! ¡Sigue así!';
@@ -133,39 +141,40 @@ function handleClick(tile) {
     }, 1000);
     return;
   }
-
+  //La constante que se ha declarado antes para poner la cantidad restante de toques que quedan
   info.textContent = `Tu turno: ${remainingTaps} Tap${
     remainingTaps > 1 ? 's' : ''
   }`;
 }
-
+//Esta función lo que hace es empezar el primer turno del juego
 function startGame() {
+  //Pone en oculto el boton de inicio de juego
   startButton.classList.add('hidden');
   info.classList.remove('hidden');
   info.textContent = 'Espera a que termine la secuencia...';
   nextRound();
 }
-
+//Activa el inicio del juego cuando se pulsa el boton de inicio
 startButton.addEventListener('click', startGame);
 tileContainer.addEventListener('click', event => {
   const { tile } = event.target.dataset;
 
   if (tile) handleClick(tile);
 });
-
+//Esta funcion lo que hace es mostrar las puntuaciones maximas alcanzadas
 function showHighScores() {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const highScoreList = document.getElementById('highScores');
-
+//Esto guarda el nombre y la puntuacion maxima
   highScoreList.innerHTML = highScores
     .map((score) => `<li>${score.name} - (${score.score}p.)`)
     .join('');
 }
-
+//Esta funcion verifica que sea una puntuacion maxima
 function checkHighScore(score) {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const lowestScore = highScores[NO_OF_HIGH_SCORES - 1]?.score ?? 0;
-
+//Estp hace que salte una alerta si la puntuacion es mayor que una puntuacion maxima conseguida anteriormente
   if (score > lowestScore) {
     const name = prompt('¡Has conseguido un nuevo récord! Introduce tu nombre:');
     const newScore = { score, name };
@@ -173,11 +182,12 @@ function checkHighScore(score) {
     showHighScores();
   }
 }
-
+//Esta funcion guarda las puntuaciones maximas 
 function saveHighScore(score, highScores) {
   highScores.push(score);
+  //Esta funcion ordena las puntuaciones comparando las conseguidas anteriormente con las nuevas
   highScores.sort((a, b) => b.score - a.score);
   highScores.splice(NO_OF_HIGH_SCORES);
-
+//Esto convierte el int en una string para guardarlo en el localStorage
   localStorage.setItem('highScores', JSON.stringify(highScores));
 }
