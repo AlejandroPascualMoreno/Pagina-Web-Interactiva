@@ -1,3 +1,5 @@
+// Función para mostrar el 'modal' del Login
+
 var modal = document.getElementById('id01');
 
 window.onclick = function(event) {
@@ -6,21 +8,32 @@ window.onclick = function(event) {
     }
 }
 
+// Número de máximas puntuaciones a mostrar por pantalla (se puede modificar)
+
 const NO_OF_HIGH_SCORES = 5;
 const HIGH_SCORES = 'highScores';
 
+// Llamada a la función que mostrará las máximas puntuaciones por pantalla
+
 showHighScores();
+
+// Variables que usaremos (comparamos la secuencia de la máquina con la humana...
+// ...y si coinciden se suma +1 tanto al nivel como a la puntuación)
 
 let sequence = [];
 let humanSequence = [];
 let level = 0;
 let score = -1;
 
+// Constantes que usaremos junto al CSS para dar estilo y animar distintas partes de la aplicación
+
 const startButton = document.querySelector('.js-start');
 const info = document.querySelector('.js-info');
 const heading = document.querySelector('.js-heading');
 const puntuacion = document.querySelector('.js-puntuacion');
 const tileContainer = document.querySelector('.js-container');
+
+// Función que reinicia varios parámetros al terminar la partida (GAME OVER)
 
 function resetGame(text) {
   
@@ -38,10 +51,15 @@ function resetGame(text) {
   tileContainer.classList.add('unclickable');
 }
 
+// Función que permite al jugador hacer click en los botones del juego e iniciar su turno
+
 function humanTurn(level) {
   tileContainer.classList.remove('unclickable');
   info.textContent = `Tu turno: ${level} Tap${level > 1 ? 's' : ''}`;
 }
+
+// Función que anima los botones al ser pulsados (tanto por el jugador como por la máquina)
+// SetTimeout 300 son los milisegundos que tarda el botón en ser pulsado y volver a su estado original
 
 function activateTile(color) {
   const tile = document.querySelector(`[data-tile='${color}']`);
@@ -55,6 +73,9 @@ function activateTile(color) {
   }, 300);
 }
 
+// Turno de la máquina (y el tiempo que tarda para pulsar cada botón)
+// Es necesario poner un tiempo prudencial para que los sonidos de las teclas no se pisen entre sí
+
 function playRound(nextSequence) {
   nextSequence.forEach((color, index) => {
     setTimeout(() => {
@@ -62,6 +83,8 @@ function playRound(nextSequence) {
     }, (index + 1) * 600);
   });
 }
+
+// Esta función determina qué tecla pulsará la máquina a continuación
 
 function nextStep() {
   const tiles = ['red', 'green', 'blue', 'yellow'];
