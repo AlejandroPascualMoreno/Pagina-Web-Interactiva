@@ -34,7 +34,7 @@ frasecitas[4] = "¡Nudosos son los caminos del Milagro!";
 frasecitas[5] = "¡The cake is a lie!";
 
 var longitud = frasecitas.length;
-var numeroRandom = Math.round(Math.random()*(longitud-1));
+var numeroRandom = Math.round(Math.random()* longitud);
 
 
 
@@ -59,7 +59,11 @@ const tileContainer = document.querySelector('.js-container');
 
 function resetGame(text) {
   
-  alert(text);
+  swal("Has perdido, vuelve a intentarlo",{
+    buttons: "Terrible",
+    // imageUrl: "https://pngimg.com/image/83351",
+    // imageHeight:21
+  });
   checkHighScore(score);
   sequence = [];
   humanSequence = [];
@@ -151,7 +155,7 @@ function handleClick(tile) {
   const remainingTaps = sequence.length - humanSequence.length;
   //Este condicional sirve para avisar de que la tecla pulsada es incorrecta, por lo tanto resetea el juego 
   if (humanSequence[index] !== sequence[index]) {
-    resetGame('¡PRRRR! ¡Terrible, tecla incorrecta!');
+    resetGame();
     return;
   }
   //Este condicional sirve para indicar que la combinación de teclas ha sido correcta, por lo tanto continua el juego
