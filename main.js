@@ -59,10 +59,16 @@ const tileContainer = document.querySelector('.js-container');
 
 function resetGame(text) {
   
-  swal("Has perdido, vuelve a intentarlo",{
-    buttons: "Terrible",
-    // imageUrl: "https://pngimg.com/image/83351",
-    // imageHeight:21
+  Swal.fire({
+    backdrop: `
+    rgba(0,0,0,0.2)
+    url("/images/slimechiquito.gif")
+    center top
+    no-repeat
+  `,
+    imageUrl: '/images/gameoverada.png',
+    imageWidth: 300
+    
   });
   checkHighScore(score);
   sequence = [];
