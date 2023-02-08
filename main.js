@@ -24,7 +24,29 @@ let sequence = [];
 let humanSequence = [];
 let level = 0;
 let score = -1;
+let frasecitas = new Array();
 
+frasecitas[0] = "¡Objection!";
+frasecitas[1] = "¡Que la Fuerza te acompañe!";
+frasecitas[2] = "¡Smokin' Sexy Style!";
+frasecitas[3] = "¡Hail to the king, baby!";
+frasecitas[4] = "¡Nudosos son los caminos del Milagro!";
+frasecitas[5] = "¡The cake is a lie!";
+
+var longitud = frasecitas.length;
+var numeroRandom = Math.round(Math.random()*(longitud-1));
+
+
+
+function mostrarRandomArray(){
+  for (let i= frasecitas.length - 1; i >= 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = frasecitas[i];
+    frasecitas[i] = frasecitas[j];
+    frasecitas[j] = temp;
+    info.textContent = (frasecitas[numeroRandom]);
+  }
+}
 // Constantes que usaremos junto al CSS para dar estilo y animar distintas partes de la aplicación
 
 const startButton = document.querySelector('.js-start');
@@ -135,7 +157,7 @@ function handleClick(tile) {
   //Este condicional sirve para indicar que la combinación de teclas ha sido correcta, por lo tanto continua el juego
   if (humanSequence.length === sequence.length) {
     humanSequence = [];
-    info.textContent = '¡Bingo! ¡Sigue así!';
+    mostrarRandomArray();
     setTimeout(() => {
       nextRound();
     }, 1000);
