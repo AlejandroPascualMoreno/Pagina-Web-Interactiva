@@ -61,6 +61,8 @@ function resetGame(text) {
   const sound = document.querySelector(`[data-sound='game-over']`);
   sound.play();
   Swal.fire({
+    confirmButtonColor: '#db3333',
+    confirmButtonText: '¡Terrible!',
     backdrop: `
     rgba(0,0,0,0.2)
     url("/images/slimechiquito.gif")
