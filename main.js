@@ -58,7 +58,8 @@ const tileContainer = document.querySelector('.js-container');
 // Función que reinicia varios parámetros al terminar la partida (GAME OVER)
 
 function resetGame(text) {
-  
+  const sound = document.querySelector(`[data-sound='game-over']`);
+  sound.play();
   Swal.fire({
     backdrop: `
     rgba(0,0,0,0.2)
@@ -81,6 +82,7 @@ function resetGame(text) {
   puntuacion.textContent = 'Puntuación: 0';
   info.classList.add('hidden');
   tileContainer.classList.add('unclickable');
+  
 }
 
 // Función que permite al jugador hacer click en los botones del juego e iniciar su turno
