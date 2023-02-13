@@ -26,17 +26,15 @@ let level = 0;
 let score = -1;
 let frasecitas = new Array();
 
-frasecitas[0] = "¡Objection!";
+frasecitas[0] = "Objection!";
 frasecitas[1] = "¡Que la Fuerza te acompañe!";
-frasecitas[2] = "¡Smokin' Sexy Style!";
-frasecitas[3] = "¡Hail to the king, baby!";
+frasecitas[2] = "Smokin' Sexy Style!";
+frasecitas[3] = "Hail to the king, baby!";
 frasecitas[4] = "¡Nudosos son los caminos del Milagro!";
-frasecitas[5] = "¡The cake is a lie!";
+frasecitas[5] = "The cake is a lie!";
 
 var longitud = frasecitas.length;
 var numeroRandom = Math.round(Math.random()* longitud);
-
-
 
 function mostrarRandomArray(){
   for (let i= frasecitas.length - 1; i >= 0; i--){
@@ -47,6 +45,7 @@ function mostrarRandomArray(){
     info.textContent = (frasecitas[numeroRandom]);
   }
 }
+
 // Constantes que usaremos junto al CSS para dar estilo y animar distintas partes de la aplicación
 
 const startButton = document.querySelector('.js-start');
@@ -65,11 +64,11 @@ function resetGame(text) {
     confirmButtonText: '¡Terrible!',
     backdrop: `
     rgba(0,0,0,0.2)
-    url("/images/slimechiquito.gif")
+    url("./images/slimechiquito.gif")
     center top
     no-repeat
   `,
-    imageUrl: '/images/gameoverada.png',
+    imageUrl: './images/gameoverada.png',
     imageWidth: 300
     
   });
@@ -129,46 +128,48 @@ function nextStep() {
   return random;
 }
 
-//Esta funcion lo que hace es iniciar otra ronda de juego
+// Esta función lo que hace es iniciar otra ronda de juego
+
 function nextRound() {
   level += 1;
   score += 1;
-  //Esto hace que el botón no sea clicable durante la secuencia
+  // Esto hace que el botón no sea clickable durante la secuencia
   tileContainer.classList.add('unclickable');
-  //Este mensaje sale mientras la ronda sigue su curso
+  // Este mensaje sale mientras la ronda sigue su curso
   info.textContent = 'Espera a que termine la secuencia...';
-  //Este mensaje te indica el nivel en el que te encuentras
+  // Este mensaje te indica el nivel en el que te encuentras
   heading.textContent = `Nivel ${level}`;
-  //Este mensaje te indica la puntuacion actual
+  // Este mensaje te indica la puntuación actual
   puntuacion.textContent = `Puntuación: ${score}`;
 
   //Esto lo que hace es llamar al array secuencia para iniciar la siguiente
   const nextSequence = [...sequence];
   //Aquí es donde se inicia el array de la siguiente secuencia
   nextSequence.push(nextStep());
-  //La funcion lo que hace es iniciar la ronda y poner la secuencia correspondiente
+  //Lo que hace esta función es iniciar la ronda y poner la secuencia correspondiente
   playRound(nextSequence);
 
   sequence = [...nextSequence];
-  //Aquí se pone un delay desde que termina la secuencia hasta que inicia el turno del jugador 
+  // Aquí se pone un delay desde que termina la secuencia hasta que inicia el turno del jugador 
   setTimeout(() => {
     humanTurn(level);
   }, level * 600 + 1000);
 }
 
-  //Esta funcion lo que hace es ponerle el sonido a las pulsaciones de los colores
+// Esta función lo que hace es ponerle el sonido a las pulsaciones de los colores
+
 function handleClick(tile) {
   const index = humanSequence.push(tile) - 1;
   const sound = document.querySelector(`[data-sound='${tile}']`);
   sound.play();
-  //Esta constante sirve para ver la cantidad de toques que faltan hasta completar el nivel y mostrarlo en pantalla
+  // Esta constante sirve para ver la cantidad de toques que faltan hasta completar el nivel y mostrarlo en pantalla
   const remainingTaps = sequence.length - humanSequence.length;
-  //Este condicional sirve para avisar de que la tecla pulsada es incorrecta, por lo tanto resetea el juego 
+  // Este condicional sirve para avisar de que la tecla pulsada es incorrecta, por lo tanto resetea el juego 
   if (humanSequence[index] !== sequence[index]) {
     resetGame();
     return;
   }
-  //Este condicional sirve para indicar que la combinación de teclas ha sido correcta, por lo tanto continua el juego
+  // Este condicional sirve para indicar que la combinación de teclas ha sido correcta, por lo tanto continua el juego
   if (humanSequence.length === sequence.length) {
     humanSequence = [];
     mostrarRandomArray();
@@ -177,40 +178,48 @@ function handleClick(tile) {
     }, 1000);
     return;
   }
-  //La constante que se ha declarado antes para poner la cantidad restante de toques que quedan
+  // La constante que se ha declarado antes para poner la cantidad restante de toques que quedan
   info.textContent = `Tu turno: ${remainingTaps} Tap${
     remainingTaps > 1 ? 's' : ''
   }`;
 }
-//Esta función lo que hace es empezar el primer turno del juego
+
+// Esta función lo que hace es empezar el primer turno del juego
+
 function startGame() {
-  //Pone en oculto el boton de inicio de juego
+  //Pone en oculto el botón de inicio de juego
   startButton.classList.add('hidden');
   info.classList.remove('hidden');
   info.textContent = 'Espera a que termine la secuencia...';
   nextRound();
 }
-//Activa el inicio del juego cuando se pulsa el boton de inicio
+
+// Activa el inicio del juego cuando se pulsa el botón de inicio
+
 startButton.addEventListener('click', startGame);
 tileContainer.addEventListener('click', event => {
   const { tile } = event.target.dataset;
 
   if (tile) handleClick(tile);
 });
-//Esta funcion lo que hace es mostrar las puntuaciones maximas alcanzadas
+
+// Esta función lo que hace es mostrar las puntuaciones máximas alcanzadas
+
 function showHighScores() {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const highScoreList = document.getElementById('highScores');
-//Esto guarda el nombre y la puntuacion maxima
+  //Esto guarda el nombre y la puntuación máxima
   highScoreList.innerHTML = highScores
     .map((score) => `<li>${score.name} - (${score.score}p.)`)
     .join('');
 }
-//Esta funcion verifica que sea una puntuacion maxima
+
+// Esta función verifica que sea una puntuación máxima
+
 function checkHighScore(score) {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const lowestScore = highScores[NO_OF_HIGH_SCORES - 1]?.score ?? 0;
-//Estp hace que salte una alerta si la puntuacion es mayor que una puntuacion maxima conseguida anteriormente
+  // Esto hace que salte una alerta si la puntuación es mayor que una puntuación máxima conseguida anteriormente
   if (score > lowestScore) {
     const name = prompt('¡Has conseguido un nuevo récord! Introduce tu nombre:');
     const newScore = { score, name };
@@ -218,12 +227,14 @@ function checkHighScore(score) {
     showHighScores();
   }
 }
-//Esta funcion guarda las puntuaciones maximas 
+
+// Esta función guarda las puntuaciones máximas 
+
 function saveHighScore(score, highScores) {
   highScores.push(score);
-  //Esta funcion ordena las puntuaciones comparando las conseguidas anteriormente con las nuevas
+  // Esta función ordena las puntuaciones comparando las conseguidas anteriormente con las nuevas
   highScores.sort((a, b) => b.score - a.score);
   highScores.splice(NO_OF_HIGH_SCORES);
-//Esto convierte el int en una string para guardarlo en el localStorage
+// Esto convierte el int en una string para guardarlo en el localStorage
   localStorage.setItem('highScores', JSON.stringify(highScores));
 }
